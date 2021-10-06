@@ -9,3 +9,22 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r library}
+library(tidyverse)
+library(readxl)
+```
+
+## Problem1
+
+Read and clean the Mr. Trash Wheel sheet
+
+```{r import and clean data}
+Trash_wheel_data = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+                   sheet = "Mr. Trash Wheel",
+                   range = "A2:N408") %>% 
+  janitor::clean_names() %>% 
+  drop_na(dumpster) %>% 
+  mutate(sports_balls = round(sports_balls))
+```
+
+
