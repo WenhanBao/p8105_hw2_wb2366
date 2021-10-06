@@ -16,7 +16,7 @@ library(readxl)
 
 ## Problem1
 
-Read and clean the Mr. Trash Wheel sheet
+**Read and clean the Mr. Trash Wheel sheet**
 
 ```{r import and clean data}
 Trash_wheel_data = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
@@ -27,4 +27,27 @@ Trash_wheel_data = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx"
   mutate(sports_balls = round(sports_balls))
 ```
 
+**Read and clean precipitation data for 2018 and 2019.**
+
+```{r read and clean preciptation}
+# Import 2019 Precipitation data
+precipitation_2019 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+                   sheet = "2019 Precipitation",
+                   range = "A2:B14") %>% 
+  janitor::clean_names() %>% 
+  drop_na(total) %>% 
+  mutate(year = "2019")
+
+# Import 2019 Precipitation data
+precipitation_2018 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+                   sheet = "2018 Precipitation",
+                   range = "A2:B14") %>% 
+  janitor::clean_names() %>% 
+  drop_na(total) %>% 
+  mutate(year = "2018")
+
+# Combine two datasets
+prec_2018_2019 = vctrs::vec_c(precipitation_2018, precipitation_2019) %>% 
+  mutate(month = as.character(month))
+```
 
