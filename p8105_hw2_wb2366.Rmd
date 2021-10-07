@@ -38,7 +38,7 @@ precipitation_2019 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xls
   drop_na(total) %>% 
   mutate(year = "2019")
 
-# Import 2019 Precipitation data
+# Import 2018 Precipitation data
 precipitation_2018 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
                    sheet = "2018 Precipitation",
                    range = "A2:B14") %>% 
@@ -47,7 +47,19 @@ precipitation_2018 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xls
   mutate(year = "2018")
 
 # Combine two datasets
-prec_2018_2019 = vctrs::vec_c(precipitation_2018, precipitation_2019) %>% 
+prec_2018_2019 = bind_rows(precipitation_2018, precipitation_2019) %>%
+  janitor::clean_names() %>% 
   mutate(month = as.character(month))
 ```
+
+**Write a paragraph about these data**
+
+**what was the total precipitation in 2018?**
+
+**Answer:** The total precipitation in 2018 is `r filter(prec_2018_2019, year == "2018") %>% pull(total) %>% sum()`
+
+**What was the median number of sports balls in a dumpster in 2019?**
+
+**Answer:** The median number of sports balls in a dumpster in 2019 is `r filter(Trash_wheel_data, year == "2019") %>% pull(sports_balls) %>% median()`
+
 
