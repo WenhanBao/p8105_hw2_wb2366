@@ -65,7 +65,7 @@ prec_2018_2019 = bind_rows(precipitation_2018, precipitation_2019) %>%
 ##Problem2
 
 **clean the data in pols-month.csv.**
-```{r}
+```{r clean_pols_month}
 pols_month = read_csv(file = "./data/fivethirtyeight_datasets/pols-month.csv")%>%
   janitor::clean_names() %>% 
   separate(mon, into = c("year", "month", "day")) %>% 
@@ -74,5 +74,16 @@ pols_month = read_csv(file = "./data/fivethirtyeight_datasets/pols-month.csv")%>
     president = ifelse(prez_gop == 0, "dem", "gop")) %>% 
   select(-"prez_dem" & -"prez_gop" & -"day") %>% 
   relocate("year", "month", "president")
+```
+
+**clean the data in snp.csv.**
+```{r clean_snp_data}
+snp_data = read_csv(file = "./data/fivethirtyeight_datasets/snp.csv") %>% 
+  janitor::clean_names() %>% 
+  separate(date, into = c("month", "day", "year")) %>% 
+  mutate(month = as.integer(month),
+    month = month.name[month]) %>% 
+  select(-"day") %>% 
+  relocate("year", "month")
 ```
 
