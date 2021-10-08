@@ -14,9 +14,10 @@ library(tidyverse)
 library(readxl)
 library(lubridate)
 library(dplyr)
+library(ggplot2)
 ```
 
-##Problem1
+## Problem1
 
 **Read and clean the Mr. Trash Wheel sheet**
 
@@ -64,7 +65,7 @@ prec_2018_2019 = bind_rows(precipitation_2018, precipitation_2019) %>%
 
 **Answer:** The median number of sports balls in a dumpster in 2019 is `r filter(Trash_wheel_data, year == "2019") %>% pull(sports_balls) %>% median()`
 
-##Problem2
+## Problem2
 
 **clean the data in pols-month.csv.**
 ```{r clean_pols_month}
@@ -113,7 +114,7 @@ Pols_snp_unemploy_data <-
 
 **Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset** 
 
-##Problem3
+## Problem3
 
 **Load and tidy the data.**
 ```{r load and tidy}
@@ -160,7 +161,16 @@ popname_male_df = filter(babynames_df, gender == "MALE" & rank == "1") %>%
 
 **Produce a scatter plot**
 ```{r scatter plot}
+scatterplot_df = filter(babynames_df,
+                        gender == "MALE" &
+                        ethnicity == "WHITE NON HISPANIC" &
+                        year_of_birth == "2016")
 
+ggplot(scatterplot_df, aes(x = rank, y = count)) + 
+  geom_point() +
+  labs(title = "The number and rank of name for male, white non-hispanic children born in 2016", 
+       x = "The rank in popularity of that name", 
+       y = "The number of children with a name")
 ```
 
 
