@@ -9,7 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r library}
+```{r library, results='hide'}
 library(tidyverse)
 library(readxl)
 library(lubridate)
@@ -22,9 +22,9 @@ library(ggplot2)
 **Read and clean the Mr. Trash Wheel sheet**
 
 ```{r import and clean data}
-Trash_wheel_data = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+Trash_wheel_data = read_excel("./data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", 
                    sheet = "Mr. Trash Wheel",
-                   range = "A2:N408") %>% 
+                   range = "A2:N534") %>% 
   janitor::clean_names() %>% 
   drop_na(dumpster) %>% 
   mutate(sports_balls = round(sports_balls))
@@ -34,7 +34,7 @@ Trash_wheel_data = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx"
 
 ```{r read and clean preciptation}
 # Import 2019 Precipitation data
-precipitation_2019 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+precipitation_2019 = read_excel("./data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", 
                    sheet = "2019 Precipitation",
                    range = "A2:B14") %>% 
   janitor::clean_names() %>% 
@@ -42,7 +42,7 @@ precipitation_2019 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xls
   mutate(year = "2019")
 
 # Import 2018 Precipitation data
-precipitation_2018 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+precipitation_2018 = read_excel("./data/Trash-Wheel-Collection-Totals-7-2020-2.xlsx", 
                    sheet = "2018 Precipitation",
                    range = "A2:B14") %>% 
   janitor::clean_names() %>% 
@@ -52,10 +52,15 @@ precipitation_2018 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xls
 # Combine two datasets
 prec_2018_2019 = bind_rows(precipitation_2018, precipitation_2019) %>%
   janitor::clean_names() %>% 
-  mutate(month = month.name[month])
+  mutate(month = month.name[month]) %>% 
+  relocate("year", "month", "total")
 ```
 
 **Write a paragraph about these data**
+
+**Answer:** For the first data set, Mr. Trash Wheel contains ``r nrow(Trash_wheel_data)`` observations with ``r ncol(Trash_wheel_data)`` variables which are respectively `Trash_wheel_data`(``r names(Trash_wheel_data)``)
+
+For the second data set, precipitation data for 2018 and 2019 contains ``r nrow(prec_2018_2019)`` observations with ``r ncol(prec_2018_2019)`` variables which are respectively `prec_2018_2019`(``r names(prec_2018_2019)``)
 
 **what was the total precipitation in 2018?**
 
@@ -113,6 +118,14 @@ Pols_snp_unemploy_data <-
 ```
 
 **Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset** 
+
+**Answer:** For the pols-months data set, it contains ``r nrow(pols_month)`` observations with ``r ncol(pols_month)`` variables which are respectively ``r names(pols_month)``. The range of years is from 1947 to 2015.
+
+For the snp data set, it contains ``r nrow(snp_data)`` observations with ``r ncol(snp_data)`` variables which are respectively ``r names(snp_data)``. The range of years is from 1969 to 2015.
+
+For the unemployment data set, it contains ``r nrow(unemployment_data)`` observations with ``r ncol(unemployment_data)`` variables which are respectively ``r names(unemployment_data)``. The range of years is from 1948 to 2015.
+
+For the merging data set, it contains ``r nrow(Pols_snp_unemploy_data)`` observations with ``r ncol(Pols_snp_unemploy_data)`` variables which are respectively ``r names(Pols_snp_unemploy_data)``
 
 ## Problem3
 
